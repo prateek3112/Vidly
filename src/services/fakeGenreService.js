@@ -1,15 +1,9 @@
-export const genres =[
-    {_id : "s4d5f6g7h8j9k" ,
-     name : "Action"
-    },
-    {_id : "z3w4e5r6ty7uni" ,
-     name : "Fantasy"
-    },
-    {_id : "s4d5f4esdrftg" ,
-     name : "Romantic"
-    }
-];
-
-export function getGenres() {
-    return genres.filter(g =>g)
-}
+export const genres = [
+    { _id: "5b21ca3eeb7f6fbccd471818", name: "Action" },
+    { _id: "5b21ca3eeb7f6fbccd471814", name: "Comedy" },
+    { _id: "5b21ca3eeb7f6fbccd471820", name: "Thriller" }
+  ];
+  
+  export function getGenres() {
+    return genres.filter(g => g);
+  }

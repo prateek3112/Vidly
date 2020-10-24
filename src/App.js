@@ -1,31 +1,37 @@
 import React from "react";
+import {ToastContainer} from 'react-toastify';
 //import logo from './logo.svg';
-import {Route , Redirect , Switch} from 'react-router-dom';
-import "./App.css";
+import { Route, Redirect, Switch } from "react-router-dom";
 import Movies from "./components/movies";
-import Customers from './components/customers';
-import Rentals from './components/rentals';
-import NotFound from './components/notFound';
+import Customers from "./components/customers";
+import Rentals from "./components/rentals";
+import NotFound from "./components/notFound";
 import NavBar from "./components/navBar";
-import MovieForm from './components/movieForm';
 import LoginForm from "./components/loginForm";
+import RegisterForm from "./components/registerForm";
+import MovieForm from "./components/movieForm";
+import 'react-toastify/dist/ReactToastify.css';
+import "./App.css";
 
 function App() {
   return (
     <div>
+      <ToastContainer />
       <NavBar />
-    <main className="container">
-      <Switch>
-      <Route path="/login" component={LoginForm}></Route>
-      <Route path="/movies" component={Movies}></Route>
-      <Route path="/customers" component={Customers}></Route>
-      <Route path="/rentals" component={Rentals}></Route>
-      <Route path="/not-found" component={NotFound}></Route>
-      <Redirect from='/' exact to='/movies' />
-      <Redirect to='/not-found' />
-
-      </Switch>
-    </main>
+      <main className="container">
+        <Switch>
+          <Redirect from="/" exact to="/movies" />
+          <Route path="/movies/:id" component={MovieForm}></Route>
+          <Route path="/login" component={LoginForm}></Route>
+          <Route path="/register" component={RegisterForm}></Route>
+          <Route path="/movies" component={Movies}></Route>
+          <Route path="/customers" component={Customers}></Route>
+          <Route path="/rentals" component={Rentals}></Route>
+          <Route path="/not-found" component={NotFound}></Route>
+          <Redirect from="/" exact to="/movies" />
+          <Redirect to="/not-found" />
+        </Switch>
+      </main>
     </div>
   );
 }
