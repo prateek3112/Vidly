@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import { useHistory } from "react-router-dom";
-import { getGenres } from "../services/fakeGenreService";
-import { getMovies, getMovie, saveMovie } from "../services/fakeMovieService";
+import { getGenres } from "../services/genreService";
+import { getMovies, getMovie, saveMovie } from "../services/movieService";
 import Select from "./common/select";
 
 export default class MovieForm extends Form {
@@ -34,22 +34,40 @@ export default class MovieForm extends Form {
       .max(20),
   };
 
-  componentDidMount() {
-    const genres = getGenres();
+ async populateGenres()
+  {
+    const { data } = await getGenres();
+    const genres = data.data;
+    console.log(genres);
     this.setState({ genres });
+  }
+
+  async populateMovie(){
     const movieId = this.props.match.params.id;
-    debugger;
     if (movieId === "new") {
       return;
-    } else {
-      const movie = getMovie(movieId);
-      if (!movie) {
-        return this.props.history.replace("/not-found");
-      } else this.setState({ data: this.mapToViewModel(movie) });
-    }
+    } 
+    try {
+      const{data:movie} = await getMovie(movieId);
+      
+      console.log(movie);
+      this.setState({ data: this.mapToViewModel(movie) });
+     } catch(ex) {
+        if(ex.response && ex.response.status===404)
+        this.props.history.replace("/not-found");
+
+      }
   }
+  async componentDidMount() {
+     
+    await this.populateGenres();
+
+    await this.populateMovie
+    
+    }
+  
   mapToViewModel = (movie) => {
-    console.log(movie);
+    console.log(movie._id);
     return {
       _id: movie._id,
       title: movie.title,
@@ -58,8 +76,8 @@ export default class MovieForm extends Form {
       dailyRentalRate: movie.dailyRentalRate,
     };
   };
-  doSubmit = () => {
-    saveMovie(this.state.data);
+  doSubmit = async () => {
+    await saveMovie(this.state.data);
     this.props.history.push("/movies");
   };
 
